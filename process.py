@@ -20,22 +20,22 @@ atomsize = 0
 
 with open(filename, "rb") as f:
     byte = f.read(1)
-    while byte != "" and x < 500:
+    while byte != "":# and x < 500:
         print "x: %s, State: %s" % (x, state)
         # Do stuff with byte.
         if state == 0:
             state = 1
             atom = {}
-            print "create new atom"
+            #print "create new atom"
         elif state == 1:
             for i in range(4): # read three more bytes to finish the size
-                print i
+                #print i
                 lst.append(byte)
                 byte = f.read(1)
                 x += 1
             atomsizehex = lst[x-4] + lst[x-3] + lst[x-2] + lst[x-1]
             atomsize = int(binascii.hexlify(atomsizehex),16)
-            print "atomsize: %s" % atomsize
+            #print "atomsize: %s" % atomsize
             atom['atomsize'] = atomsize
             #print "size is %s %s %s %s" % (binascii.hexlify(lst[x-4]), binascii.hexlify(lst[x-3]), binascii.hexlify(lst[x-2]), binascii.hexlify(lst[x-1]))
             state = 2
@@ -46,14 +46,14 @@ with open(filename, "rb") as f:
                 byte = f.read(1)
                 x += 1
             atomtype = lst[x-4] + lst[x-3] + lst[x-2] + lst[x-1]
-            print atomtype
+            #print atomtype
             atom['atomtype'] = atomtype
             #print "size is %s %s %s %s" % (binascii.hexlify(lst[x-4]), binascii.hexlify(lst[x-3]), binascii.hexlify(lst[x-2]), binascii.hexlify(lst[x-1]))
             if atomsize > 8:
                 state = 3
             else:
                 atoms.append(atom)
-                print atoms
+                #print atoms
                 state = 0
         elif state == 3:
             for i in range(atomsize-8):
@@ -66,10 +66,13 @@ with open(filename, "rb") as f:
                 #print i
                 rawdata += lst[i]
             
-            print "rawdata"
-            print rawdata
-            atom['rawdata'] = rawdata
+            #print "rawdata"
+            #print rawdata
+            
+            #atom['rawdata'] = rawdata
             atoms.append(atom)
-            print atoms
+            
+            #print atoms
             state = 0
-print lst
+print atoms
+print x
